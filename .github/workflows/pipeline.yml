@@ -1,9 +1,10 @@
 name: Deployment pipeline
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    branches: [master]
+    types:
+      [opened, synchronize]
       # note that your "main" branch might be called main instead of master
 
 jobs:
@@ -15,6 +16,7 @@ jobs:
         with:
           node-version: '16'
       - name: Deploy to production
+        if: ${{ github.event_name == 'push' }}
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: 'srv-clb7icaqviqc73cluu1g'
