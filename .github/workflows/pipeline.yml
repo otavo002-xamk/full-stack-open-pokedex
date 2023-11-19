@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+
       - name: Install dependencies
         run: npm install
 
@@ -29,12 +30,3 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-  deployment:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Deploy to production
-        if: ${{ github.event_name == 'push' }}
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: 'srv-clb7icaqviqc73cluu1g'
-          api-key: ${{ secrets.RENDER_TOKEN }}
