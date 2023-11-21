@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Deploy to production
-        if: ${{ github.event.pull_request.merged == true }}
+        if: ${{ github.event.pull_request.merged == true && contains(join(toJson(github.event.commits.*.message)), '#skip')}}
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: 'srv-clb7icaqviqc73cluu1g'
