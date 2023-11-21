@@ -8,9 +8,11 @@ on:
 jobs:
   production_deployment:
     runs-on: ubuntu-20.04
+    env:
+      CONTAINS_NO_SKIP: ${{ ! contains(join(toJson(github.event.commits.*.message)), '#skip') }}
     steps:
       - name: Deploy to production
-        if: ${{ github.event.pull_request.merged == true && ! contains(join(toJson(github.event.commits.*.message)), '#skip')}}
+        if: ${{ github.event.pull_request.merged == true && env.CONTAINS_NO_SKIP}}
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: 'srv-clb7icaqviqc73cluu1g'
