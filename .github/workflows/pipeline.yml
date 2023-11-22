@@ -44,6 +44,7 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: '0'
       - name: Bump version and push tag
+        run: echo "$CONTAINS_NO_SKIP"
         if: ${{ env.CONTAINS_NO_SKIP }}
         uses: anothrNick/github-tag-action@1.64.0
         env:
