@@ -1,5 +1,4 @@
 name: Production
-#testing skip
 
 on:
   pull_request:
@@ -7,25 +6,9 @@ on:
       - closed
 
 jobs:
-  tag_release:
-    runs-on: ubuntu-20.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
-          fetch-depth: '0'
-      - name: Bump version and push tag
-        if: ${{ github.event.pull_request.merged == true && ! contains(join(toJson(github.event.commits.*.message)), '#skip') }}
-        uses: anothrNick/github-tag-action@1.67.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-
   production_deployment:
-    needs: [tag_release]
     runs-on: ubuntu-20.04
+    if: ${{ github.event.pull_request.merged == true }}
     steps:
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
